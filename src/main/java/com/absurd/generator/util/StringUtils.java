@@ -1,11 +1,7 @@
 package com.absurd.generator.util;
 
 public class StringUtils {
-	public static void main(String [] args)throws Exception{
-		String str = "T_ADM_MODULES";
-		System.out.println(toLowerCase(str));
-		System.out.println(toClassCase(str));
-	}
+
 	/**
 	 * 将表名和字段名转换为相对应的java文件名和属性名
 	 * 比如 T_AD_MODULES 转换为 tAdModules；而USERS转换为users

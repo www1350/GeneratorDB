@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 /**
  * Created by Administrator on 2016/5/19.
  */
-@Component
 public class BaseDao {
     @Autowired
 private   JdbcTemplate jdbcTemplate;

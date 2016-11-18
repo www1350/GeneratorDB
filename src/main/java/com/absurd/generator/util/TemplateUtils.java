@@ -62,14 +62,18 @@ public class TemplateUtils {
 			
 			TemplateUtils.jdbcTypeMap.put("BLOB", p.getProperty("BLOB"));
 			TemplateUtils.jdbcTypeMap.put("CHAR", p.getProperty("CHAR"));
-			TemplateUtils.jdbcTypeMap.put("CLOB", p.getProperty("CLOB"));
-			TemplateUtils.jdbcTypeMap.put("DATE", p.getProperty("DATE"));
-			TemplateUtils.jdbcTypeMap.put("NUMBER", p.getProperty("NUMBER"));
-			TemplateUtils.jdbcTypeMap.put("LONG", p.getProperty("LONG"));
+			TemplateUtils.jdbcTypeMap.put("TEXT", p.getProperty("TEXT"));
+			TemplateUtils.jdbcTypeMap.put("INTEGER", p.getProperty("INTEGER"));
+			TemplateUtils.jdbcTypeMap.put("MEDIUMINT", p.getProperty("MEDIUMINT"));
+			TemplateUtils.jdbcTypeMap.put("BOOLEAN", p.getProperty("BOOLEAN"));
 			TemplateUtils.jdbcTypeMap.put("VARCHAR", p.getProperty("VARCHAR"));
-			TemplateUtils.jdbcTypeMap.put("VARCHAR2", p.getProperty("VARCHAR2"));
-			TemplateUtils.jdbcTypeMap.put("NVARCHAR2", p.getProperty("NVARCHAR2"));
-			
+			TemplateUtils.jdbcTypeMap.put("TINYINT", p.getProperty("TINYINT"));
+			TemplateUtils.jdbcTypeMap.put("SMALLINT", p.getProperty("SMALLINT"));
+			TemplateUtils.jdbcTypeMap.put("BIT", p.getProperty("BIT"));
+			TemplateUtils.jdbcTypeMap.put("DATE", p.getProperty("DATE"));
+			TemplateUtils.jdbcTypeMap.put("DOUBLE", p.getProperty("DOUBLE"));
+			TemplateUtils.jdbcTypeMap.put("LONG", p.getProperty("LONG"));
+
 			inStreamJDBC.close();
 			p.clear();
 		}catch(Exception e){

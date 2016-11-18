@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by wangwenwei on 16/11/18.
  */
-@Repository("tableDao")
+@Repository
 public class TableDao extends BaseDao{
 
     public List getTable(){
@@ -19,7 +19,12 @@ public class TableDao extends BaseDao{
 
 
     public List getTableColumns(String tableName){
-        String sqlColumns =  "select COLUMN_NAME from information_schema.columns where table_name= " +tableName;
+        String sqlColumns =  "select COLUMN_NAME from information_schema.columns where table_name= '" +tableName+"'";
+        return getJdbcTemplate().queryForList(sqlColumns);
+    }
+
+    public List getTableColumnsAll(String tableName){
+        String sqlColumns =  "select * from information_schema.columns where table_name= '" +tableName+"'";
         return getJdbcTemplate().queryForList(sqlColumns);
     }
 
@@ -27,4 +32,11 @@ public class TableDao extends BaseDao{
         String sql = "Select TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where table_name= ?";
         return (String) getJdbcTemplate().queryForObject( sql, new Object[] {tableName}, java.lang.String.class);
     }
+
+    public List getColumnsDataType(String tableName){
+        String sqlColumns =  "select DATA_TYPE from information_schema.columns where table_name= '" +tableName+"'";
+        return getJdbcTemplate().queryForList(sqlColumns);
+    }
+
+
 }
