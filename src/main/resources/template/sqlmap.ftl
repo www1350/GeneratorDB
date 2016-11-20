@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.lkg.framework.dao.${tableClassName}Dao">
+<mapper namespace="com.absurd.framework.dao.${tableClassName}Dao">
 
-  <resultMap id="${tableName}Map" type="com.lkg.framework.domain.${tableClassName}">
+  <resultMap id="${tableClassName}Map" type="com.absurd.framework.domain.${tableClassName}">
   	<#list list as columnbean>
   		<result property="${columnbean.name}" column="${columnbean.columnName}" jdbcType="${columnbean.jdbcType}" javaType="${columnbean.javaType}" />
   	</#list>
@@ -37,24 +37,24 @@
 </#list>  
   </sql>
 
-  <select id="getObjById" parameterType="java.lang.String" resultMap="${tableName}Map">
+  <select id="get${tableClassName}ById" parameterType="java.lang.String" resultMap="${tableClassName}Map">
   	<include refid="${tableName}Select"/>
   	<![CDATA[ and id=${"#"}{id}]]> 
   </select>
   
-  <select id="listByPage" parameterType="com.lkg.framework.domain.${tableClassName}" resultMap="${tableName}Map">
+  <select id="list${tableClassName}ByPage" parameterType="com.absurd.framework.domain.${tableClassName}" resultMap="${tableClassName}Map">
 	<![CDATA[select * from (select rownum as rn, TT.* from ( ]]>
 	<include refid="${tableName}Select"/>
 	<include refid="${tableName}Where"/>
     <![CDATA[order by CREATE_TIME desc ) TT where rownum <= ${"#"}{end}) where rn >= ${"#"}{start}]]>		
   </select>
  
-  <select id="getTotalNum" parameterType="com.lkg.framework.domain.${tableClassName}" resultType="java.lang.Integer">
+  <select id="get${tableClassName}TotalNum" parameterType="com.absurd.framework.domain.${tableClassName}" resultType="java.lang.Integer">
     <![CDATA[ select count(ID) from ${realTableName} where DEL_FLAG='1']]>
     <include refid="${tableName}Where"/> 
   </select>  
      
-  <insert id="saveObj" parameterType="com.lkg.framework.domain.${tableClassName}">
+  <insert id="save${tableClassName}" parameterType="com.absurd.framework.domain.${tableClassName}">
   	<![CDATA[
 	  insert into ${realTableName} 
 	  	(
@@ -87,7 +87,7 @@
      ]]>	
   </insert>
   
-  <update id="updateObj" parameterType="com.lkg.framework.domain.${tableClassName}">
+  <update id="update${tableClassName}" parameterType="com.absurd.framework.domain.${tableClassName}">
 	  <![CDATA[
 	    update  ${realTableName} set 
 	    	<#list list as columnbean>
@@ -101,7 +101,7 @@
 	   ]]>
   </update>
   
-  <update id="deleteById" parameterType="java.lang.String">
+  <update id="delete${tableClassName}ById" parameterType="java.lang.String">
 		 <![CDATA[ update ${realTableName} set DEL_FLAG='0' where ID =${"#"}{id} ]]>
 	</update>
   

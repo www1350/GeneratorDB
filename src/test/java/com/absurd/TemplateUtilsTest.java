@@ -40,5 +40,17 @@ public class TemplateUtilsTest {
         out.close();
     }
 
+    @Test
+    public void getPathTest(){
+       String template = (String) TemplateUtils.getTemplateMap().get("template");
+        String templatePath = (String) TemplateUtils.getTemplateMap().get("templatePath");
+
+        String targetPath = (String) TemplateUtils.getTemplateMap().get("targetPath");
+
+        String packagePath = (String) TemplateUtils.getTemplateMap().get("packagePath");
+
+        System.out.printf("tep:"+template+">>target"+targetPath+">>templatePath:"+templatePath+">>page:"+packagePath);
+    }
+
 
 }

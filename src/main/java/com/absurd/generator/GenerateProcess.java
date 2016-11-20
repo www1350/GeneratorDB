@@ -2,10 +2,13 @@ package com.absurd.generator;
 
 import com.absurd.generator.bean.ColumnBean;
 import com.absurd.generator.dao.TableDao;
+import com.absurd.generator.util.FilterUtils;
 import com.absurd.generator.util.StringUtils;
 import com.absurd.generator.util.TemplateUtils;
 import freemarker.template.Template;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Service
 public class GenerateProcess {
 
 	@Autowired
@@ -104,20 +108,13 @@ public class GenerateProcess {
 		if(!sqlMapFile.exists()){
 			sqlMapFile.mkdirs();
 		}
-		
-		String simpleTableName = (String)TemplateUtils.getTemplateMap().get("table");
-		if(!simpleTableName.equalsIgnoreCase("ALL")){
-			List listColumn = this.doTransition(tableDao.getTableColumns(simpleTableName));
-			gernerateOneTable(listColumn,simpleTableName);
-		}else if(simpleTableName.equalsIgnoreCase("ALL")){
-			//从数据库取数据
-			List list = tableDao.getTable();
-			for (Object o : list) {
-				HashMap map = (HashMap) o;
-				String tableName = (String) map.get("TABLE_NAME");
-				List listColumn = this.doTransition(tableDao.getTableColumns(tableName));
-				gernerateOneTable(listColumn,tableName);
-			}
+		//去掉系统表
+		List<Map<String, Object>> tableList = FilterUtils.filterTableName(tableDao.getTable(),"t_");
+		if(CollectionUtils.isEmpty(tableList)) return;
+		for(Map<String, Object> tableMap:tableList) {
+			String tableName =(String) tableMap.get("TABLE_NAME");
+			List listColumn = this.doTransition(tableDao.getTableColumnsAll(tableName));
+			gernerateOneTable(listColumn, tableName);
 		}
 	}
 	
@@ -240,44 +237,39 @@ public class GenerateProcess {
 			ColumnBean cb = new ColumnBean();
 			cb.setTableName((String) mapColumn.get("TABLE_NAME"));
 			cb.setName((String) mapColumn.get("COLUMN_NAME"));
-			BigDecimal dataScale = (BigDecimal)mapColumn.get("DATA_SCALE");
-			String type =(String) mapColumn.get("DATA_TYPE");
+			cb.setColumnName((String) mapColumn.get("COLUMN_NAME"));
+			cb.setColumnClassName(StringUtils.makeFirstUpper((String) mapColumn.get("COLUMN_NAME")));
+//			BigDecimal dataScale = (BigDecimal)mapColumn.get("NUMERIC_SCALE");
+			String type =((String) mapColumn.get("DATA_TYPE")).toUpperCase();
+			String columnType =(String) mapColumn.get("COLUMN_TYPE");
+			Map<String,Integer>  columnTypeMap = 	StringUtils.extraTypeLenth(columnType);
 			Map map = TemplateUtils.getJdbcTypeMap();
-			if(map.containsKey(type)){
+			if(map.containsKey(type.toUpperCase())){
 				String str = (String)map.get(type);
 				String[] strs = str.split("/");
-				if(type.equals("NUMBER") && (dataScale!= null?dataScale.intValue():0)>0){
-					cb.setJavaType("java.math.BigDecimal");
-				}else{
-					cb.setJavaType(strs[0]);
-				}
 				cb.setJdbcType(strs[1]);
+				cb.setJavaType(strs[0]);
 			}else{
 				System.out.println("Unknown mysql datatype： "+type);
 				cb.setJavaType("");
 				cb.setJdbcType("");
 			}
 			cb.setType(type);
-			cb.setLength(((BigDecimal) mapColumn.get("DATA_LENGTH")).intValue());
+			if(columnTypeMap!=null )
+			cb.setLength(columnTypeMap.get("length"));
 
-		String character =	(String) mapColumn.get("NULLABLE");
-			if("Y".equals(character)){
+		String character =	(String) mapColumn.get("IS_NULLABLE");
+			if("YES".equals(character)){
 				cb.setNullAble(true);
 			}else{
 				cb.setNullAble(false);
 			}
 
-			Object scale = mapColumn.get("DATA_SCALE");
-			String comments = (String) mapColumn.get("COMMENTS");
-			if(comments == null || comments == ""){
-				comments = (String) mapColumn.get("COLUMN_NAME");
-			}
+			String comments = (String) mapColumn.get("COLUMN_COMMENT");
 			cb.setCommentValue(comments);
-			if(scale == null){
-				cb.setScale(0);
-			}else{
-				cb.setScale(Integer.parseInt(scale.toString()));
-			}
+			if(columnTypeMap!=null )
+				cb.setScale(columnTypeMap.get("scala"));
+
 			columnBeanList.add(cb);
 		}
 		return columnBeanList;

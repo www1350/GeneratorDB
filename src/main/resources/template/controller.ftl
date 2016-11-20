@@ -1,4 +1,4 @@
-package com.lkg.oa.web.controller;
+package com.absurd.framework.web.controller;
 
 import java.util.Map;
 import java.util.List;
@@ -11,18 +11,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.lkg.framework.common.vo.PageView;
-import com.lkg.framework.domain.${tableClassName};
-import com.lkg.framework.domain.AdmModule;
-import com.lkg.framework.domain.AdmUser;
-import com.lkg.framework.service.${tableClassName}Service;
-import com.lkg.framework.service.AdmUserAuthService;
-import com.lkg.framework.util.SessionUtil;
-import com.lkg.oa.web.common.check.CheckModel;
-import com.lkg.oa.web.common.check.CheckUtil;
-import com.lkg.oa.web.common.util.ParamUtil;
-import com.lkg.oa.web.controller.BaseController;
-import com.lkg.oa.web.util.JsonUtil;
+import com.absurd.framework.common.vo.PageView;
+import com.absurd.framework.domain.${tableClassName};
+import com.absurd.framework.domain.AdmModule;
+import com.absurd.framework.domain.AdmUser;
+import com.absurd.framework.service.${tableClassName}Service;
+import com.absurd.framework.service.AdmUserAuthService;
+import com.absurd.framework.util.SessionUtil;
+import com.absurd.web.common.check.CheckModel;
+import com.absurd.web.common.check.CheckUtil;
+import com.absurd.web.common.util.ParamUtil;
+import com.absurd.web.controller.BaseController;
+import com.absurd.web.util.JsonUtil;
 
 @Controller
 public class ${tableClassName}Controller extends BaseController{
@@ -33,7 +33,7 @@ public class ${tableClassName}Controller extends BaseController{
 	
 	@Autowired
 	private ${tableClassName}Service ${tableName}Service;
-	
+
 	@Autowired
 	private AdmUserAuthService admUserAuthService;
 	
@@ -70,13 +70,14 @@ public class ${tableClassName}Controller extends BaseController{
 		
 		if(validation(request, ${tableName})){
 			try {
-				Integer total = ${tableName}Service.getTotalNum(${tableName});//总数
-				
+				Integer total = ${tableName}Service.get${tableClassName}TotalNum(${tableName});//总数
+				Integer total = ${tableName}Service.get${tableClassName}TotalNum(${tableName});//总数
+
 				pageInfo = new PageView(request.getParameter("currentPage"),total);//分页
 				${tableName}.setStart(pageInfo.getStart());
 				${tableName}.setEnd(pageInfo.getEnd());
 				if(total.intValue() > 0){
-					List<${tableClassName}> list = ${tableName}Service.listByPage(${tableName});
+					List<${tableClassName}> list = ${tableName}Service.list${tableClassName}(${tableName});
 					pageInfo.setDataList(list);
 				}
 				
@@ -112,7 +113,7 @@ public class ${tableClassName}Controller extends BaseController{
 		${tableClassName} ${tableName} = new ${tableClassName}();
 		try {
 			if(!"".equals(id)){
-				${tableName} = ${tableName}Service.getObjById(id);
+				${tableName} = ${tableName}Service.get${tableClassName}(id);
 			}
 			if(${tableName} == null){
 				mav.addObject("message", "${tableComment}不存在");
@@ -170,15 +171,15 @@ public class ${tableClassName}Controller extends BaseController{
 					${tableName}.setCreateBy(user.getId());//当前用户主键
 					${tableName}.setCreateTime(new java.sql.Timestamp(new java.util.Date().getTime()));
 					${tableName}.setDelFlag("1");
-					${tableName}Service.saveObj(${tableName});
+					${tableName}Service.save${tableClassName}(${tableName});
 				}
 			}else{
 				//更新
-				${tableClassName} ${tableName} = ${tableName}Service.getObjById(id);
+				${tableClassName} ${tableName} = ${tableName}Service.get${tableClassName}(id);
 				if(validation(request, ${tableName})){
 					${tableName}.setUpdateBy(user.getId());//当前用户主键
 					${tableName}.setUpdateTime(new java.sql.Timestamp(new java.util.Date().getTime()));
-					${tableName}Service.updateObj(${tableName});
+					${tableName}Service.update${tableClassName}(${tableName});
 				}
 			}
 			
@@ -205,7 +206,7 @@ public class ${tableClassName}Controller extends BaseController{
 		try {
 			String id = ParamUtil.getString(request, "id", "");
 			if(!"".equals(id)){
-				${tableName}Service.deleteById(id);//删除
+				${tableName}Service.delete${tableClassName}(id);//删除
 			}else{
 				mav.addObject("message","参数错误");
 				mav.setViewName(failureUrl);

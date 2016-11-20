@@ -1,12 +1,12 @@
-package com.ec.outlets.dao.impl;
+package com.absurd.framework.dao.impl;
 
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.orm.ibatis.support.SqlMapClientDaoSupport;
 
-import com.ec.outlets.dao.${tableClassName}Dao;
-import com.ec.outlets.domain.${tableClassName};
+import com.absurd.framework.dao.${tableClassName}Dao;
+import com.absurd.framework.domain.${tableClassName};
 
 public class ${tableClassName}DaoImpl extends SqlMapClientDaoSupport implements ${tableClassName}Dao {
 	
@@ -15,7 +15,7 @@ public class ${tableClassName}DaoImpl extends SqlMapClientDaoSupport implements 
 	 */
 	public void delete${tableClassName}(Integer id) throws Exception {
 		try {
-			this.getSqlMapClientTemplate().delete("${tableName}.delete${tableClassName}", id);
+			this.getSqlMapClientTemplate().delete("${tableName}.delete${tableClassName}ById", id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -39,7 +39,7 @@ public class ${tableClassName}DaoImpl extends SqlMapClientDaoSupport implements 
 	 */
 	public ${tableClassName} get${tableClassName}(Integer id) throws Exception{
 		try {
-			return (${tableClassName})this.getSqlMapClientTemplate().queryForObject("${tableName}.get${tableClassName}", id);
+			return (${tableClassName})this.getSqlMapClientTemplate().queryForObject("${tableName}.get${tableClassName}ById", id);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -51,7 +51,7 @@ public class ${tableClassName}DaoImpl extends SqlMapClientDaoSupport implements 
 	 */
 	public List<${tableClassName}> list${tableClassName}(Map queryMap) throws Exception {
 		try {
-			return this.getSqlMapClientTemplate().queryForList("${tableName}.list${tableClassName}", queryMap);
+			return this.getSqlMapClientTemplate().queryForList("${tableName}.list${tableClassName}ByPage", queryMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
@@ -60,9 +60,9 @@ public class ${tableClassName}DaoImpl extends SqlMapClientDaoSupport implements 
 	}
 	
 	// 得到所有查询记录数
-	public Integer getTotalNum(Map queryMap)throws Exception{
+	public Integer get${tableClassName}TotalNum(Map queryMap)throws Exception{
 		try {
-			return (Integer)this.getSqlMapClientTemplate().queryForObject("${tableName}.getTotalNum", queryMap);
+			return (Integer)this.getSqlMapClientTemplate().queryForObject("${tableName}.get${tableClassName}TotalNum", queryMap);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

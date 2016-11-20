@@ -1,7 +1,7 @@
-package com.lkg.framework.domain;
+package com.absurd.framework.domain;
 
 import java.util.Date;
-import com.lkg.framework.common.vo.PageVo;
+import com.absurd.framework.common.vo.PageVo;
 
 /**
  * 

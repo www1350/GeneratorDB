@@ -1,6 +1,36 @@
 package com.absurd.generator.util;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class StringUtils {
+
+	public static Map extraTypeLenth(String str){
+		Integer length  = 0;
+		Integer scala = 0;
+		Map<String,Integer> map = new HashMap();
+		if(str.indexOf("(")<0) return null;
+		Pattern pattern = Pattern.compile("([a-zA-Z]+)\\((.*)\\)");
+		Matcher matcher = pattern.matcher(str);
+		if(matcher.find()) {
+			String stt = matcher.group(2);
+
+			if(stt.indexOf(",")<0) {
+				length = Integer.valueOf(stt);
+				scala = 0;
+			}
+			else{
+				length = 	Integer.valueOf(stt.split(",")[0]);
+				scala = 	Integer.valueOf(stt.split(",")[1]);
+			}
+		}
+		map.put("length",length);
+		map.put("scala",scala);
+	return  map;
+	}
+
 
 	/**
 	 * 将表名和字段名转换为相对应的java文件名和属性名
@@ -59,5 +89,10 @@ public class StringUtils {
 			str = str.substring(0,1).toUpperCase() + str.substring(1);
 		}
 		return str;
+	}
+
+	public static  String makeFirstUpper(String str){
+		return str.substring(0,1).toUpperCase()+str.substring(1);
+
 	}
 }

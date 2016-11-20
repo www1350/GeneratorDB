@@ -14,5 +14,14 @@ public class StringUtilsTest {
 
         Assert.assertEquals(StringUtils.toLowerCase(str),"admModules");
         Assert.assertEquals(StringUtils.toClassCase(str),"AdmModules");
+        String str2="id";
+        Assert.assertEquals(StringUtils.makeFirstUpper(str2),"Id");
+    }
+    @Test
+    public  void  extraTypeTest(){
+        Assert.assertEquals(StringUtils.extraTypeLenth("varchar(25)").get("length"),25);
+        Assert.assertNull(StringUtils.extraTypeLenth("timestamp"));
+
+        Assert.assertEquals(StringUtils.extraTypeLenth("double(11,2)").get("scala"),2);
     }
 }
