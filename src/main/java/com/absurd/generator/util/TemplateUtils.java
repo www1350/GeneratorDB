@@ -35,11 +35,14 @@ public class TemplateUtils {
 			String templatePath = (String)p.get("templatePath");
 			String targetPath = (String)p.get("targetPath");
 			String packagePath = (String)p.get("packagePath");
+			String tablePrefix = (String)p.get("tablePrefix");
 			p.clear();
 			//生成文件放置位置
 			TemplateUtils.templateMap.put("targetPath", targetPath);
 			//文件包位置
 			TemplateUtils.templateMap.put("packagePath", packagePath);
+			//表前缀
+			TemplateUtils.templateMap.put("tablePrefix",tablePrefix);
 
 			inStream.close();
 			

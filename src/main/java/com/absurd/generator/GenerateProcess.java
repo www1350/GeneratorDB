@@ -109,7 +109,7 @@ public class GenerateProcess {
 			sqlMapFile.mkdirs();
 		}
 		//去掉系统表
-		List<Map<String, Object>> tableList = FilterUtils.filterTableName(tableDao.getTable(),"t_");
+		List<Map<String, Object>> tableList = FilterUtils.filterTableName(tableDao.getTable(),(String)TemplateUtils.getTemplateMap().get("tablePrefix"));
 		if(CollectionUtils.isEmpty(tableList)) return;
 		for(Map<String, Object> tableMap:tableList) {
 			String tableName =(String) tableMap.get("TABLE_NAME");
