@@ -19,22 +19,22 @@ public class TableDao extends BaseDao{
 
 
     public List getTableColumns(String tableName){
-        String sqlColumns =  "select COLUMN_NAME from information_schema.columns where table_name= '" +tableName+"'";
+        String sqlColumns =  "select COLUMN_NAME from information_schema.columns where table_name= '" +tableName+"' AND TABLE_SCHEMA = (SELECT database())";
         return getJdbcTemplate().queryForList(sqlColumns);
     }
 
     public List getTableColumnsAll(String tableName){
-        String sqlColumns =  "select * from information_schema.columns where table_name= '" +tableName+"'";
+        String sqlColumns =  "select * from information_schema.columns where table_name= '" +tableName+"' AND TABLE_SCHEMA = (SELECT database())";
         return getJdbcTemplate().queryForList(sqlColumns);
     }
 
     public String getTableComment(String tableName){
-        String sql = "Select TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where table_name= ?";
+        String sql = "Select TABLE_COMMENT from INFORMATION_SCHEMA.TABLES where table_name= ? AND TABLE_SCHEMA = (SELECT database())";
         return (String) getJdbcTemplate().queryForObject( sql, new Object[] {tableName}, java.lang.String.class);
     }
 
     public List getColumnsDataType(String tableName){
-        String sqlColumns =  "select DATA_TYPE from information_schema.columns where table_name= '" +tableName+"'";
+        String sqlColumns =  "select DATA_TYPE from information_schema.columns where table_name= '" +tableName+"' AND TABLE_SCHEMA = (SELECT database())";
         return getJdbcTemplate().queryForList(sqlColumns);
     }
 
