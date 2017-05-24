@@ -13,7 +13,7 @@ public class TableDao extends BaseDao{
     public List getTable(){
 
         //WHERE TABLE_SCHEMA = '数据库名'
-        String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES";
+        String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE != 'SYSTEM VIEW'  AND TABLE_SCHEMA = (SELECT database())";
         return getJdbcTemplate().queryForList(sql);
     }
 
